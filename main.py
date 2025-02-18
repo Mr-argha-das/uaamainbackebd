@@ -13,12 +13,11 @@ connect('UaaWebsitemain', host="mongodb+srv://avbigbuddy:nZ4ATPTwJjzYnm20@cluste
 app = FastAPI()
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:5173"],  # Frontend origin(s)
+    allow_origins=["*"],  # Frontend origin(s)
     allow_credentials=True,                  # Allow cookies and credentials
     allow_methods=["*"],                     # Allow all HTTP methods (GET, POST, etc.)
     allow_headers=["*"],                     # Allow all headers
 )
-
 
 
 

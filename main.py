@@ -2,6 +2,12 @@
 from mongoengine import connect
 from fastapi import FastAPI
 import uvicorn
+from AvBigBuddy.AvCounters.routes import AvCounterRoutes
+from AvBigBuddy.AvServices.routes import AvServiceRoute
+from AvBigBuddy.AvProducts.routes import AvProductsRoute
+from AvBigBuddy.AvMembers.routes import AvMemberRoute
+
+
 from blogs.routes import blogroutes
 from homePageQuery.routes import homePageRoutes
 from query.routes import contactroutes
@@ -13,17 +19,23 @@ from counters.routes import counterRoutes
 
 
 from user.routes import useroutes
+
+
 connect('UaaWebsitemain', host="mongodb+srv://avbigbuddy:nZ4ATPTwJjzYnm20@cluster0.wplpkxz.mongodb.net/UaaWebsitemain")
 app = FastAPI()
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # Frontend origin(s)
+    allow_origins=["*"],                     # Frontend origin(s)
     allow_credentials=True,                  # Allow cookies and credentials
     allow_methods=["*"],                     # Allow all HTTP methods (GET, POST, etc.)
     allow_headers=["*"],                     # Allow all headers
 )
 
 
+app.include_router(AvCounterRoutes.router, tags=['Av Counters'])
+app.include_router(AvServiceRoute.router, tags=['Av Services'])
+app.include_router(AvProductsRoute.router, tags=['Av Products'])
+app.include_router(AvMemberRoute.router, tags=['Av Members'])
 
 
 app.include_router(serviceroutes.router, tags=['service'])

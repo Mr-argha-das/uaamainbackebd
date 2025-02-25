@@ -1,3 +1,4 @@
+
 from mongoengine import connect
 from fastapi import FastAPI
 import uvicorn
@@ -7,6 +8,9 @@ from query.routes import contactroutes
 from samplepapers.routes import sampleroutes
 from serive.routes import serviceroutes
 from fastapi.middleware.cors import CORSMiddleware
+
+from counters.routes import counterRoutes
+
 
 from user.routes import useroutes
 connect('UaaWebsitemain', host="mongodb+srv://avbigbuddy:nZ4ATPTwJjzYnm20@cluster0.wplpkxz.mongodb.net/UaaWebsitemain")
@@ -21,7 +25,10 @@ app.add_middleware(
 
 
 
+
 app.include_router(serviceroutes.router, tags=['service'])
+app.include_router(counterRoutes.router, tags=['counters'])
+
 app.include_router(blogroutes.router, tags=["Blog routes"])
 app.include_router(useroutes.router, tags=["user routes"])
 app.include_router(sampleroutes.router, tags=["Sample"])

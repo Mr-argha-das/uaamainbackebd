@@ -1,3 +1,4 @@
+from http.client import HTTPException
 import json
 from bson import ObjectId
 from fastapi import FastAPI ,APIRouter
@@ -6,7 +7,7 @@ from AvBigBuddy.AvProducts.models.AvProductsModel import AvProductModel, AvProdu
 
 
 router= APIRouter()
-   
+
 @router.post("/api/v1/AvAddProduct")
 async def addProduct(body : AvProductModel):
     ProductData = AvProductTable(**body.dict())
@@ -36,7 +37,47 @@ async def ProductList():
           "status" : False,
           "data": None
        }
-       
+@router.get("/api/v1/get-AvProduct/{_id}")
+async def get_product(_id: str):
+    query = _id.replace("-", " ")
+    product = AvProductTable.objects(id=query).first()
+    
+    if not product:
+        raise HTTPException(status_code=404, detail="Product not found")
+    
+    return {
+        "message": "Product data",
+        "data": json.loads(product.to_json()),
+        "status": 200
+    }
+
+@router.put("/api/v1/update-AvProduct/{_id}")
+async def update_product(_id: str, body: AvProductModel):
+    query = _id.replace("-", " ")
+    try:
+        product = AvProductTable.objects(id=query).first()
+        if not product:
+            raise HTTPException(status_code=404, detail="Product not found")
+        
+        # Update the document using `modify`
+        product.modify(
+            image=body.image,
+            title=body.title,
+            description=body.description,
+            price=body.price  # Add more fields if necessary
+        )
+        product.reload()  # Reload to get updated data
+
+        return {
+            "message": "Product updated successfully",
+            "data": json.loads(product.to_json())
+        }
+    except Exception as e:
+        import traceback
+        traceback.print_exc()
+        raise HTTPException(status_code=500, detail=f"Error: {str(e)}")
+
+  
 @router.delete("/api/v1/AvDeleteAllProducts")
 async def deleteProducts():
    deleteProductData = AvProductTable.objects.delete()

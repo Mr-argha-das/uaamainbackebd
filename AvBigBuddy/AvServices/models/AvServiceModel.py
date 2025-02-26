@@ -8,5 +8,5 @@ class AvServiceTable(Document):
 
 class AvServiceModel(BaseModel):
     image : str 
-    title : str
+    title : str 
     description : str 

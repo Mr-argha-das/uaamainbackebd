@@ -1,3 +1,4 @@
+from http.client import HTTPException
 import json
 from bson import ObjectId
 from fastapi import FastAPI ,APIRouter
@@ -37,7 +38,45 @@ async def serviceList():
           "status" : False,
           "data": None
        }
-       
+
+@router.get("/api/v1/get-AvService/{_id}")
+async def get_service(_id: str):
+    query = _id.replace("-", " ")
+    service = AvServiceTable.objects(id=query).first()
+    
+    if not service:
+        raise HTTPException(status_code=404, detail="Service not found")
+    return {
+        "message": "Service data",
+        "data": json.loads(service.to_json()),
+        "status": 200
+    }
+
+@router.put("/api/v1/update-AvService/{_id}")
+async def update_service(_id: str, body: AvServiceModel):
+    query = _id.replace("-", " ")
+    try:
+        service = AvServiceTable.objects(id=query).first()
+        if not service:
+            raise HTTPException(status_code=404, detail="Service not found")
+        
+        # Update the document using `modify`
+        service.modify(
+            image=body.image,
+            title=body.title,
+            description=body.description
+        )
+        service.reload()  # Reload to get updated data
+
+        return {
+            "message": "Service updated successfully",
+            "data": json.loads(service.to_json())
+        }
+    except Exception as e:
+        import traceback
+        traceback.print_exc()
+        raise HTTPException(status_code=500, detail=f"Error: {str(e)}")
+
 @router.delete("/api/v1/AvDeleteAllServices")
 async def deleteServices():
    deleteServiceData = AvServiceTable.objects.delete()

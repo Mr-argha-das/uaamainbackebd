@@ -1,3 +1,4 @@
+from http.client import HTTPException
 import json
 from bson import ObjectId
 from fastapi import FastAPI ,APIRouter
@@ -15,6 +16,7 @@ async def addMembers(body : AvMembersModel):
     MembersData.save()
     toJson = MembersData.to_json()
     fromJson = json.loads(toJson)
+    
     return{
         "message" : "data added successfully",
         "status" : True,
@@ -33,13 +35,55 @@ async def MembersList():
         "status" : True,
         "data" : fromJson,
     }
+      
     else:
        return{
           "message" : "Data Not Found",
           "status" : False,
           "data": None
        }
-       
+   
+@router.get("/api/v1/get-AvMember/{_id}")
+async def get_member(_id: str):
+    query = _id.replace("-", " ")
+    member = AvMembersTable.objects(id=query).first()
+    
+    if not member:
+        raise HTTPException(status_code=404, detail="Member not found")
+    
+    return {
+        "message": "Member data",
+        "data": json.loads(member.to_json()),
+        "status": 200
+    }
+
+@router.put("/api/v1/update-AvMember/{_id}")
+async def update_member(_id: str, body: AvMembersModel):
+    query = _id.replace("-", " ")
+    try:
+        member = AvMembersTable.objects(id=query).first()
+        if not member:
+            raise HTTPException(status_code=404, detail="Member not found")
+        
+        # Update the document using `modify`
+        member.modify(
+            name=body.name,
+            role=body.role,
+            email=body.email,
+            phone=body.phone,
+            profile_image=body.profile_image  # Assuming there's a profile image field
+        )
+        member.reload()  # Reload to get updated data
+
+        return {
+            "message": "Member updated successfully",
+            "data": json.loads(member.to_json())
+        }
+    except Exception as e:
+        import traceback
+        traceback.print_exc()
+        raise HTTPException(status_code=500, detail=f"Error: {str(e)}")
+        
 @router.delete("/api/v1/AvDeleteAllMemberss")
 async def deleteMemberss():
    deleteMembersData = AvMembersTable.objects.delete()

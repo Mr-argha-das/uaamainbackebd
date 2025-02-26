@@ -63,8 +63,7 @@ async def update_product(_id: str, body: AvProductModel):
         product.modify(
             image=body.image,
             title=body.title,
-            description=body.description,
-            price=body.price  # Add more fields if necessary
+            type=body.type,
         )
         product.reload()  # Reload to get updated data
 

@@ -67,11 +67,9 @@ async def update_member(_id: str, body: AvMembersModel):
         
         # Update the document using `modify`
         member.modify(
+            image=body.image,
             name=body.name,
-            role=body.role,
-            email=body.email,
-            phone=body.phone,
-            profile_image=body.profile_image  # Assuming there's a profile image field
+            designation=body.designation,
         )
         member.reload()  # Reload to get updated data
 

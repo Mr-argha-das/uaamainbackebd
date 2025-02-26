@@ -87,7 +87,7 @@ async def deleteServices():
          "data" : None
       }
    
-@router.delete("/api/v1/AvDeleteById/{_id}")
+@router.delete("/api/v1/AvDeleteAService/{_id}")
 async def ServiceDeleteById(_id : str):
     object_id = ObjectId(_id)
     item = AvServiceTable.objects(id=object_id).first()

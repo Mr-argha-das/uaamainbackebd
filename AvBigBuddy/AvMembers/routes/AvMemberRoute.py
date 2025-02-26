@@ -91,13 +91,14 @@ async def deleteMemberss():
          "status" : True,
          "data" : None
       }
-   
-@router.delete("/api/v1/AvDeleteById/{_id}")
-async def MembersDeleteById(_id : str):
+
+
+@router.delete("/api/v1/AvDeleteAMember/{_id}")
+async def ServiceDeleteById(_id : str):
     object_id = ObjectId(_id)
     item = AvMembersTable.objects(id=object_id).first()
     item.delete()
-
+    
     return {
         "message": "Data Deleted Successfully",
         "status": True,

@@ -1,7 +1,7 @@
 import json
 from fastapi import APIRouter
 
-from AvBigBuddy.AvQueries.models.contactquery import AvContactQueryModel, AvContactQueryTable
+from AvBigBuddy.AvQueries.models.avcontactquery import AvContactQueryModel, AvContactQueryTable
 
 
 

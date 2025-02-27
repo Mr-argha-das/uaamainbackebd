@@ -6,7 +6,7 @@ from AvBigBuddy.AvCounters.routes import AvCounterRoutes
 from AvBigBuddy.AvServices.routes import AvServiceRoute
 from AvBigBuddy.AvProducts.routes import AvProductsRoute
 from AvBigBuddy.AvMembers.routes import AvMemberRoute
-
+from AvBigBuddy.AvQueries.routes import avcontactroutes
 
 from blogs.routes import blogroutes
 from homePageQuery.routes import homePageRoutes
@@ -36,6 +36,7 @@ app.include_router(AvCounterRoutes.router, tags=['Av Counters'])
 app.include_router(AvServiceRoute.router, tags=['Av Services'])
 app.include_router(AvProductsRoute.router, tags=['Av Products'])
 app.include_router(AvMemberRoute.router, tags=['Av Members'])
+app.include_router(avcontactroutes.router, tags=["Av contact query"])
 
 
 app.include_router(serviceroutes.router, tags=['service'])

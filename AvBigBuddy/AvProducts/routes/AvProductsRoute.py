@@ -37,6 +37,8 @@ async def ProductList():
           "status" : False,
           "data": None
        }
+       
+       
 @router.get("/api/v1/get-AvProduct/{_id}")
 async def get_product(_id: str):
     query = _id.replace("-", " ")

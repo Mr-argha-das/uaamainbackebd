@@ -1,3 +1,4 @@
+from http.client import HTTPException
 import json
 from fastapi import APIRouter
 
@@ -26,16 +27,39 @@ async def getAllCounters():
         "data": json.loads(findata.to_json()),
         "status": 200
     }
-    
 
 @router.put("/api/v1/update-avcounters/{counter_id}")
 async def updateCounter(counter_id: str, body: AVCountersModel):
-    counter = AVCountersTable.objects.filter(id=counter_id).first()
-    if not counter:
-        return {"message": "Counter not found", "status": 404}
+    query = counter_id.replace("-", " ")
+    try:
+        counter = AVCountersTable.objects(id=query).first()
+        if not counter:
+            raise HTTPException(status_code=404, detail="Counter not found")  
+        counter.modify(
+            build=body.build,
+            identity=body.identity,
+            growth=body.growth,
+        )   
+        counter.reload()  
+
+        return {
+            "message": "Counter updated successfully",
+            "data": json.loads(counter.to_json())
+        }
+    except Exception as e:
+        import traceback
+        traceback.print_exc()
+        raise HTTPException(status_code=500, detail=f"Error: {str(e)}")
+
+
+# @router.put("/api/v1/update-avcounters/{counter_id}")
+# async def updateCounter(counter_id: str, body: AVCountersModel):
+#     counter = AVCountersTable.objects.filter(id=counter_id).first()
+#     if not counter:
+#         return {"message": "Counter not found", "status": 404}
     
-    counter.update(**body.dict())
-    return {"message": "Counter updated successfully", "status": 200}
+#     counter.update(**body.dict())
+#     return {"message": "Counter updated successfully", "status": 200}
     
 @router.delete("/api/v1/deleteAvCounters")
 def delete_all_samples():

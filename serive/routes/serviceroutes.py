@@ -64,9 +64,9 @@ async def getService(serviceTitle: str):
 
 @router.put("/api/v1/update-service/{seo_title}")
 async def update_service(seo_title: str, body: ServiceSchema):
-    query = seo_title.replace("-", " ")
     try:
         # Find the service by seo_title
+        query = seo_title.replace("-", " ")
         service = ServiceTable.objects(seo_title=query).first()
         if not service:
             raise HTTPException(status_code=404, detail="Service not found")

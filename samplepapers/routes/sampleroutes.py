@@ -61,11 +61,12 @@ async def upload_sample(
     body: SampleBodyModel
 ):
     try:
-        # Upload main file to Spaces
-        # Save data to MongoDB (Example: Ensure `SamplePaperTable` exists)
+       
         sample_paper = SamplePaperTable(
             **body.dict()
         )
+        print(body)
+        
         sample_paper.save()
 
         return JSONResponse(content={
@@ -82,7 +83,8 @@ async def upload_sample(
 async def update_sample(seo_title: str, body: SampleBodyModel):
     try:
         # Find the document by seo_title
-        sample_paper = SamplePaperTable.objects(seo_title=seo_title).first()
+        query = seo_title.replace("-", " ") 
+        sample_paper = SamplePaperTable.objects(seo_title=query).first()
         
         if not sample_paper:
             raise HTTPException(status_code=404, detail="Sample paper not found")
@@ -95,10 +97,12 @@ async def update_sample(seo_title: str, body: SampleBodyModel):
             pageCount=body.pageCount,
             moduleName=body.moduleName,
             wordcount=body.wordcount,
+            sample_category = body.sample_category,
+            price = body.price,
             description=body.description,
             file=body.file
         )
-
+        
         return {
             "message": "Sample paper updated successfully",
             "data": sample_paper.to_json()
@@ -136,14 +140,18 @@ async def searchSAmple(query: str):
 
 @router.get("/api/v1/get-sample-perticuler/{title}")
 async def getSamplePerticuler(title: str):
-    query = title.replace("-", " ")
-    findata = SamplePaperTable.objects.get(seo_title=query)
-    return {
-        "message":"sample data",
-        "data": json.loads(findata.to_json()),
-        "status": 200
-    }
- 
+    query = title.replace("-", " ")  # Normalize the title
+    try:
+        findata = SamplePaperTable.objects.get(seo_title=query)
+        return {
+            "message": "sample data",
+            "data": json.loads(findata.to_json()),
+            "status": 200
+        }
+    except SamplePaperTable.DoesNotExist:
+        raise HTTPException(status_code=404, detail="Sample paper not found")
+   
+   
    
 @router.delete("/api/v1/delete-sample/{sampleTitle}")
 async def delete_sample(sampleTitle: str): 

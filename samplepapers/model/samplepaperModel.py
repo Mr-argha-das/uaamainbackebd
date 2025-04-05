@@ -8,8 +8,11 @@ class SamplePaperTable(Document):
     fileimages = ListField(StringField())
     pageCount = IntField(required=True)
     moduleName = StringField(required=True)
+    moduleCode = StringField(required=True)
     wordcount = IntField(required=True)
+    price = IntField(required=True)
     description = StringField(required=True)
+    sample_category = StringField(required=True)
     file = StringField(required=True)
 
 class  SamplePaperModel(BaseModel):
@@ -17,7 +20,10 @@ class  SamplePaperModel(BaseModel):
     seo_description : str
     pageCount:int
     moduleName:str
+    moduleCode:str
     wordcount:int
+    price : int
+    sample_category : str
     description: str
 
 
@@ -27,6 +33,9 @@ class SampleBodyModel(BaseModel):
     fileimages : list[str]
     pageCount : int
     moduleName : str
+    moduleCode : str
     wordcount : int
+    price : int
+    sample_category : str
     description : str
     file : str

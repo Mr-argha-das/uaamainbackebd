@@ -12,6 +12,7 @@ router = APIRouter()
 async def addblog(body: BlogSchema):
     current_date = date.today()
 
+    print("body" , body)
 # Format the date
     formatted_date = current_date.strftime("%d-%m-%Y")   
     saveData = BlogsTable(

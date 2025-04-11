@@ -22,7 +22,6 @@ s3 = client('s3',
             endpoint_url=SPACES_ENDPOINT_URL,
             aws_access_key_id=PACES_ACCESS_KEY,
             aws_secret_access_key=SPACES_SECRET_KEY)
-
 router = APIRouter()
 
 # Function to upload file to DigitalOcean Spaces
@@ -97,6 +96,7 @@ async def update_sample(seo_title: str, body: SampleBodyModel):
             pageCount=body.pageCount,
             moduleName=body.moduleName,
             wordcount=body.wordcount,
+            sample_file=body.sample_file,
             sample_category = body.sample_category,
             price = body.price,
             description=body.description,
@@ -180,6 +180,21 @@ async def upload_image(file: UploadFile = File(...)):
 
         # Upload to DigitalOcean Spaces
         file_url = upload_file_to_space(file_content, file.filename)
+
+        return {"message": "File uploaded successfully", "file_url": file_url}
+
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"File upload failed: {str(e)}")
+    
+
+@router.post("/api/v1/upload-pdf")
+async def upload_image(sample_file: UploadFile = File(...)):
+    try:
+        # Read file content
+        file_content = await sample_file.read()
+
+        # Upload to DigitalOcean Spaces
+        file_url = upload_file_to_space(file_content, sample_file.filename)
 
         return {"message": "File uploaded successfully", "file_url": file_url}
 

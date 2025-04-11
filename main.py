@@ -12,6 +12,7 @@ from blogs.routes import blogroutes
 from homePageQuery.routes import homePageRoutes
 from query.routes import contactroutes
 from samplepapers.routes import sampleroutes
+from sampleCategory.routes import sampleCategoryRoutes
 from serive.routes import serviceroutes
 from fastapi.middleware.cors import CORSMiddleware
 
@@ -45,6 +46,7 @@ app.include_router(counterRoutes.router, tags=['counters'])
 app.include_router(blogroutes.router, tags=["Blog routes"])
 app.include_router(useroutes.router, tags=["user routes"])
 app.include_router(sampleroutes.router, tags=["Sample"])
+app.include_router(sampleCategoryRoutes.router, tags=["Sample Category"])
 app.include_router(contactroutes.router, tags=["contact query"])
 app.include_router(homePageRoutes.router, tags=["Home page query"])
 

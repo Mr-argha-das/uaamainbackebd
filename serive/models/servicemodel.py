@@ -8,6 +8,7 @@ class ServiceTable(Document):
     icon = StringField(required=True)
     seo_title = StringField(required=True)
     seo_description=StringField(required=True)
+    seo_keywords = StringField(required=True)
     description = StringField(required=True)
     cr_date = StringField(required=True)
 class ServiceSchema(BaseModel):
@@ -17,4 +18,5 @@ class ServiceSchema(BaseModel):
     icon : str
     seo_title:str
     seo_description: str
+    seo_keywords :str
     description : str

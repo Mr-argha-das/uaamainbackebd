@@ -1,5 +1,8 @@
-from mongoengine import Document, StringField
+from datetime import datetime
+from typing import Optional
+from mongoengine import Document, StringField ,DateTimeField , BooleanField
 from pydantic import BaseModel
+
 
 
 class UserTable(Document):
@@ -8,14 +11,14 @@ class UserTable(Document):
     password = StringField(required= True)
     phone = StringField(required=True)
     country_code = StringField(required=True)
-    
+    has_downloaded = BooleanField(default=False)
+    created_at = DateTimeField(default=datetime.utcnow)
 class UserCreateModel(BaseModel):
     name: str
     email:str
     password:str
     phone:str
     country_code:str
+    has_downloaded: bool
+    created_at: Optional[datetime] = None
     
-class UserLoginModel(BaseModel):
-    email:str
-    password:str

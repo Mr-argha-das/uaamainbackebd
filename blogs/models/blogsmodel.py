@@ -10,7 +10,7 @@ class BlogsTable(Document):
     bannerImg = StringField(required=True)
     service_category = StringField(required=False)
     cr_date = StringField(required=False)
-    
+    seo_keywords = StringField(required=True)
 class BlogSchema(BaseModel):
     title:str
     shortDec:str
@@ -18,4 +18,5 @@ class BlogSchema(BaseModel):
     seo_title:str
     seo_description: str
     service_category: str
+    seo_keywords:str
     description:str

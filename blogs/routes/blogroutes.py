@@ -21,6 +21,7 @@ async def addblog(body: BlogSchema):
         bannerImg=body.bannerImg, 
         seo_title=body.seo_title,
         seo_description=body.seo_description,
+        seo_keywords=body.seo_keywords,
         service_category=body.service_category,
         cr_date=formatted_date,
         description=body.description
@@ -66,6 +67,7 @@ async def update_blog(seo_title: str, body: BlogSchema):
             shortDec=body.shortDec,
             bannerImg=body.bannerImg,
             seo_title=body.seo_title,
+            seo_keywords=body.seo_keywords,
             seo_description=body.seo_description,
             service_category=body.service_category,
             description=body.description

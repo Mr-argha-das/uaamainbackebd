@@ -22,6 +22,7 @@ async def addService(body: ServiceSchema):
         bannerImg=body.bannerImg,
         seo_title=body.seo_title,
         seo_description=body.seo_description,
+        seo_keywords=body.seo_keywords,
         cr_date=formatted_date,
         description=body.description,
         icon=body.icon
@@ -78,6 +79,7 @@ async def update_service(seo_title: str, body: ServiceSchema):
             icon=body.icon,
             seo_title=body.seo_title,
             seo_description=body.seo_description,
+            seo_keywords=body.seo_keywords,
             description=body.description,
         )
         return {

@@ -11,7 +11,7 @@ class UserTable(Document):
     password = StringField(required= True)
     phone = StringField(required=True)
     country_code = StringField(required=True)
-    has_downloaded = BooleanField(default=False)
+    has_downloaded = BooleanField(required=False, default=False)
     created_at = DateTimeField(default=datetime.utcnow)
 class UserCreateModel(BaseModel):
     name: str
@@ -19,7 +19,7 @@ class UserCreateModel(BaseModel):
     password:str
     phone:str
     country_code:str
-    has_downloaded: bool
+    has_downloaded: Optional[bool] = False
     created_at: Optional[datetime] = None
     
 # dsds
